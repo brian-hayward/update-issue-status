@@ -1,11 +1,21 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: Update Issue Status
+description: Automatically update issue status to In Progress when an owner is assigned
+author: GitHub
+branding:
+  icon: table
 inputs:
-  milliseconds: # change this
+  project-url:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: URL of the project to add issues to
+  github-token:
+    required: true
+    description: A GitHub personal access token with write access to the project
+  open-status:
+    required: true
+    description: The string representing a new, open issue in the repository.
+  new-status:
+    required: true
+    description: The updated status of an issue.
 runs:
   using: 'node16'
   main: 'dist/index.js'
