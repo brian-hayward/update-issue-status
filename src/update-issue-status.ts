@@ -36,8 +36,8 @@ interface IssueStatusResponse {
 }
 
 interface UpdateIssueStatusResponse {
-  updateIssueStatusById: {
-    projectItem: {
+  updateProjectV2ItemFieldValue: {
+    projectV2Item: {
       id: string
       fieldValueByName: {
         field: {
@@ -59,7 +59,7 @@ export async function updateIssueStatus(): Promise<void> {
 
   const issue = github.context.payload.issue ?? github.context.payload.pull_request
   const issueOwnerName = github.context.payload.repository?.owner.login
-  const issueAssignees = github.context.payload.issue.assignees
+  const issueAssignees = github.context.payload.issue?.assignees
 
   // Ensure the issue is not already assigned
   if (Object.keys(issueAssignees).length === 0) {
@@ -124,8 +124,8 @@ export async function updateIssueStatus(): Promise<void> {
 
   const projectId = idResp[ownerTypeQuery]?.projectV2.id
   const contentId = issue?.node_id
-  const issueStatus = issueResp?.projectItems.nodes.fieldValueByName.name
-  const fieldId = issueResp?.projectItems.nodes.fieldValueByName.field.databaseId
+  const issueStatus = issueResp?.projectItems.nodes[0].fieldValueByName.name
+  const fieldId = issueResp?.projectItems.nodes[0].fieldValueByName.field.databaseId
 
   core.debug(`Project node ID: ${projectId}`)
   core.debug(`Content ID: ${contentId}`)
@@ -174,7 +174,7 @@ export async function updateIssueStatus(): Promise<void> {
     )
 
 
-  core.setOutput('itemId', updResp.updateProjectV2ItemFieldValue.projectV2Item.id)
+  core.setOutput('fieldName', updResp.updateProjectV2ItemFieldValue.projectV2Item.fieldValueByName.name)
 
 }
 

@@ -1,6 +1,6 @@
 name: Update Issue Status
 description: Automatically update issue status
-author: GitHub
+author: brian-hayward
 branding:
   icon: table
 inputs:
